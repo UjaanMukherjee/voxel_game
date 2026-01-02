@@ -69,7 +69,8 @@ class _ScreenState extends State<Screen> {
   void render() {}
 
   void updatePlayerPosition(Vector2 directionVector) {
-    directionVector = directionVector.normalized() * 5;
+    const velocity = 10.0;
+    directionVector = directionVector.normalized() * velocity;
     playerPosition.value = Vector2(
       playerPosition.value.x + directionVector.x,
       playerPosition.value.y + directionVector.y,
@@ -104,6 +105,34 @@ class PlayerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final size = 10.0;
+    final map = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 1, 1, 1, 1, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ];
+    const TILE_HEIGHT = 30.0;
+    const TILE_WIDTH = 30.0;
+    for (int i = 0; i < map.length; i++) {
+      for (int j = 0; j < map[i].length; j++) {
+        final tile = Rect.fromLTWH(
+          j * TILE_WIDTH,
+          i * TILE_HEIGHT,
+          TILE_WIDTH - 1,
+          TILE_HEIGHT - 1,
+        );
+        final tilePaint = Paint()
+          ..color = map[i][j] == 0 ? Colors.white : Colors.black;
+        canvas.drawRect(tile, tilePaint);
+      }
+    }
     final paint = Paint()..color = Colors.yellow;
     final rect = Rect.fromLTWH(repaint.value.x, repaint.value.y, size, size);
     canvas.drawRect(rect, paint);
